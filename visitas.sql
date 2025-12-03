@@ -57,3 +57,22 @@ SELECT i.nombre, s.cantidad_actual, s.cantidad_minima
 FROM stock_ingredientes s
 JOIN ingrediente i ON i.id = s.ingrediente_id
 WHERE s.cantidad_actual < s.cantidad_minima;
+
+-- ---------------------------
+-- Otras visitas
+-- -------------------------
+
+CREATE OR REPLACE VIEW vista_detalle_pedidos AS
+SELECT 
+    dp.id AS id_detalle,
+    p.id AS id_pedido,
+    cli.nombre AS cliente,
+    piz.nombre AS pizza,
+    dp.cantidad,
+    piz.precio,
+    (dp.cantidad * piz.precio) AS subtotal
+FROM detalle_pedido dp
+JOIN pedido p ON dp.pedido_id = p.id
+JOIN cliente cli ON p.cliente_id = cli.id
+JOIN pizza piz ON dp.pizza_id = piz.id;
+

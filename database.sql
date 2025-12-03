@@ -15,6 +15,23 @@ CREATE TABLE cliente(
     PRIMARY KEY (id)
 );
 
+-- ------------------------
+-- Clientes
+-- -----------------------
+
+INSERT INTO cliente (id, nombre, telefono, direccion, email, es_frecuente)
+VALUES (2, 'Cliente Faltante', '3000000000', 'Calle X', 'faltante@mail.com', 0);
+
+-- -----------------------
+--Usar clientes que existen
+-- ------------------------
+
+INSERT INTO pedido (fecha, cliente_id, empleado_id, total)
+VALUES
+(NOW(), 1, 1, 55000),
+(NOW(), 3, 3, 32000),
+(NOW(), 4, 2, 42000);
+
 -- -------------
 --Tabla empelado
 -- -------------
@@ -37,6 +54,17 @@ CREATE TABLE pizza(
     PRIMARY KEY (id)
 );
 
+-- ------------
+--Pizza
+-- ------------
+
+INSERT INTO pizza (nombre, precio)
+VALUES
+('Hawaiana', 28000),
+('Mexicana', 32000),
+('Pollo Champiñones', 30000);
+
+
 -- ----------------
 --Tabla ingrediente
 -- ----------------
@@ -46,6 +74,22 @@ CREATE TABLE ingrediente(
     nombre VARCHAR(60) NOT NULL
     PRIMARY KEY (id)
 );
+
+-- ----------------
+--Tabla agregar más ingredientes
+-- ----------------
+
+INSERT INTO ingrediente (nombre) VALUES
+('Queso Mozzarella'),
+('Pepperoni'),
+('Jamón'),
+('Champiñones'),
+('Salsa de Tomate'),
+('Cebolla'),
+('Pimiento Verde'),
+('Aceitunas Negras'),
+('Tocineta'),
+('Pollo');
 
 -- -----------------
 --Tabla pedido
@@ -131,3 +175,55 @@ CREATE TABLE stock_ingredientes (
     PRIMARY KEY (ingrediente_id),
     FOREIGN KEY (ingrediente_id) REFERENCES ingrediente(id)
 );
+
+-- ----------------------
+--Algunos ingredientes
+-- ----------------------
+
+INSERT INTO stock_ingredientes (ingrediente_id, cantidad_actual, cantidad_minima)
+VALUES
+(1, 50, 10),   -- Queso Doble Crema
+(2, 40, 10),   -- Jamón
+(3, 60, 15),   -- Pepperoni
+(4, 30, 5),    -- Piña
+(5, 25, 8);    -- Champiñones
+
+
+-- ------------------------
+--Tabla: stock ingredientes
+-- ------------------------
+
+INSERT INTO stock_ingredientes (ingrediente_id, cantidad_actual, cantidad_minima) VALUES
+(1, 50, 10),
+(2, 40, 10),
+(3, 35, 10),
+(4, 30, 10),
+(5, 60, 15),
+(6, 25, 5),
+(7, 20, 5),
+(8, 15, 5),
+(9, 18, 5),
+(10, 22, 5);
+
+-- ----------------------------
+--Tabla: Empleados
+-- ----------------------------
+
+CREATE TABLE empleado (
+  id INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(60) NOT NULL,
+  cargo ENUM('cocinero','domiciliario','cajero') NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ----------------------------
+--Tabla: Insertar más empleados
+-- ----------------------------
+
+INSERT INTO empleado (nombre, cargo)
+VALUES
+('Ana Torres', 'cocinero'),
+('Luis Martínez', 'domiciliario'),
+('Pedro Ríos', 'cajero'),
+('Valentina Gómez', 'cocinero'),
+('Santiago Londoño', 'domiciliario');
