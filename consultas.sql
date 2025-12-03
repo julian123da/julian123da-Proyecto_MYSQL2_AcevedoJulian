@@ -40,3 +40,24 @@ HAVING total_gastado > 50000;
 SELECT *
 FROM pizza
 WHERE nombre LIKE '%pollo%';
+
+-- ------------------------------
+--Nueva consultas sobre pedidos 
+-- ------------------------------
+
+SELECT c.nombre, COUNT(p.id) AS pedidos
+FROM cliente c
+JOIN pedido p ON p.cliente_id = c.id
+WHERE MONTH(p.fecha) = MONTH(CURDATE())
+GROUP BY c.id
+HAVING pedidos > 5;
+
+SELECT r.nombre, COUNT(d.id) AS total_entregas, AVG(TIMESTAMPDIFF(MINUTE,d.hora_salida,d.hora_entrega)) AS tiempo_promedio
+FROM repartidor r
+JOIN domicilio d ON d.repartidor_id = r.id
+GROUP BY r.id;
+
+SELECT i.nombre, s.cantidad_actual, s.cantidad_minima
+FROM stock_ingredientes s
+JOIN ingrediente i ON i.id = s.ingrediente_id
+WHERE s.cantidad_actual < s.cantidad_minima;

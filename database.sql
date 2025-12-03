@@ -75,3 +75,59 @@ CREATE TABLE detalle_pedido(
     FOREING KEY (pedido_id) REFERENCES pedido(id),
     FOREING KEY (pizza_id) REFERENCES pizza(id)
 );
+
+-- ------------------------
+--Tabla repartidor
+-- ------------------------
+
+CREATE TABLE repartidor (
+    id INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(60) NOT NULL,
+    zona ENUM('norte','sur','este','oeste') NOT NULL,
+    estado ENUM('disponible','no disponible') DEFAULT 'disponible',
+    PRIMARY KEY (id)
+);
+
+
+-- ------------------------
+--Tabla domicilio
+-- ------------------------
+
+CREATE TABLE domicilio (
+    id INT NOT NULL AUTO_INCREMENT,
+    pedido_id INT NOT NULL,
+    repartidor_id INT NOT NULL,
+    hora_salida DATETIME,
+    hora_entrega DATETIME,
+    distancia_km DECIMAL(5,2),
+    costo_envio DECIMAL(10,2),
+    PRIMARY KEY (id),
+    FOREIGN KEY (pedido_id) REFERENCES pedido(id),
+    FOREIGN KEY (repartidor_id) REFERENCES repartidor(id)
+);
+
+-- ------------------------
+--Tabla: historial_precios
+-- ------------------------
+
+CREATE TABLE historial_precios (
+    id INT NOT NULL AUTO_INCREMENT,
+    pizza_id INT NOT NULL,
+    precio_antiguo DECIMAL(10,2),
+    precio_nuevo DECIMAL(10,2),
+    fecha_cambio DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (pizza_id) REFERENCES pizza(id)
+);
+
+-- ------------------------
+--Tabla: stock_ingredientes
+-- ------------------------
+
+CREATE TABLE stock_ingredientes (
+    ingrediente_id INT NOT NULL,
+    cantidad_actual INT NOT NULL,
+    cantidad_minima INT NOT NULL,
+    PRIMARY KEY (ingrediente_id),
+    FOREIGN KEY (ingrediente_id) REFERENCES ingrediente(id)
+);

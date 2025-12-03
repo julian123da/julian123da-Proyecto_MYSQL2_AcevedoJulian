@@ -31,3 +31,54 @@ BEGIN
     WHERE id = NEW.pedido_id;
 END//
 DELIMITER ;
+
+-- -----------------------------------------
+--Trigger: Actualizar stock de ingredientes
+-- -----------------------------------------
+
+DELIMITER //
+CREATE TRIGGER trg_actualizar_stock
+AFTER INSERT ON detalle_pedido
+FOR EACH ROW
+BEGIN
+    UPDATE stock_ingredientes s
+    JOIN pizza_ingrediente pi ON pi.pizza_id = NEW.pizza_id
+    SET s.cantidad_actual = s.cantidad_actual - NEW.cantidad
+    WHERE s.ingrediente_id = pi.ingrediente_id;
+END//
+DELIMITER ;
+
+
+-- -----------------------------------------
+--Trigger: Registrar historial de precios 
+-- -----------------------------------------
+
+DELIMITER //
+CREATE TRIGGER trg_historial_precios
+AFTER UPDATE ON pizza
+FOR EACH ROW
+BEGIN
+    IF OLD.precio <> NEW.precio THEN
+        INSERT INTO historial_precios(pizza_id, precio_antiguo, precio_nuevo)
+        VALUES (OLD.id, OLD.precio, NEW.precio);
+    END IF;
+END//
+DELIMITER ;
+
+
+-- -----------------------------------------
+--Trigger: Marcar repartidor disponible
+-- -----------------------------------------
+
+DELIMITER //
+CREATE TRIGGER trg_repartidor_disponible
+AFTER UPDATE ON domicilio
+FOR EACH ROW
+BEGIN
+    IF NEW.hora_entrega IS NOT NULL THEN
+        UPDATE repartidor
+        SET estado = 'disponible'
+        WHERE id = NEW.repartidor_id;
+    END IF;
+END//
+DELIMITER ;

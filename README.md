@@ -64,3 +64,4 @@ Permite calcular manualmente el total de un pedido.
 - **vista_detalle_pedidos**: detalle de pizzas, cantidades y subtotales.
 
 ---
+

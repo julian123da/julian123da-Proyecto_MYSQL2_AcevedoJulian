@@ -28,3 +28,32 @@ FROM pedido p
 JOIN cliente c ON c.id = p.cliente_id
 JOIN detale_pedido d ON d.pedido_id p.id
 JOIN pizza pi ON pi.id = d.pedido_id;
+
+-- ------------------------------
+-- Nueva visita
+-- ------------------------------
+
+CREATE VIEW vista_pedidos_cliente AS
+SELECT 
+    c.nombre AS cliente,
+    COUNT(p.id) AS total_pedidos,
+    SUM(p.total) AS total_gastado
+FROM cliente c
+JOIN pedido p ON p.cliente_id = c.id
+GROUP BY c.id;
+
+CREATE VIEW vista_repartidores AS
+SELECT 
+    r.nombre AS repartidor,
+    COUNT(d.id) AS entregas_realizadas,
+    AVG(TIMESTAMPDIFF(MINUTE,d.hora_salida,d.hora_entrega)) AS tiempo_promedio,
+    r.zona
+FROM repartidor r
+JOIN domicilio d ON d.repartidor_id = r.id
+GROUP BY r.id;
+
+CREATE VIEW vista_stock_bajo AS
+SELECT i.nombre, s.cantidad_actual, s.cantidad_minima
+FROM stock_ingredientes s
+JOIN ingrediente i ON i.id = s.ingrediente_id
+WHERE s.cantidad_actual < s.cantidad_minima;
