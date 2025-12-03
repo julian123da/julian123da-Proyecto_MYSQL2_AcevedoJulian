@@ -65,3 +65,4 @@ Permite calcular manualmente el total de un pedido.
 
 ---
 
+![Texto alternativo](pizzeria.png)
