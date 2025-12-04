@@ -1,14 +1,19 @@
 -- ------------------
 --Pizzas vendidas
 -- ------------------
-
+delimiter //
+create procedure pizza_vendida()
+begin
 SELECT
     pi.nombre,
     SUM(d.cantidad) AS total_vendido
-FROM detale_pedido d
+FROM detalle_pedido d
 JOIN pizza pi ON pi.id = d.pizza_id
 GROUP BY pi.nombre
 ORDER BY total_vendido DESC;
+
+end//
+delimiter ;
 
 -- -------------------------
 --Pedidos por cliente
@@ -20,6 +25,7 @@ SELECT
 FROM pedido p
 JOIN cliente c ON c.id = p.cliente_id
 GROUP BY c.nombre;
+
 
 -- ---------------------------------------
 --Clientes que gastaron más de un monto
